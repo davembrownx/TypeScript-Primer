@@ -17,7 +17,7 @@ function goToParty (place: PartyZone): string {
 }
 
 
-//goToParty("chuck e. cheese"); This will cause error
+//goToParty("chuck e. cheese"); //This will cause error
 console.log("2. Type as enum ")
 console.log(goToParty("pizza hut")); // 'I am One Hundred, alright?!'
 console.log("--------------------");

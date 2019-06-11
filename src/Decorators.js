@@ -11,7 +11,7 @@ function xyz(label, count) {
     return function (target, key) {
         Object.defineProperty(target, key, {
             configurable: false,
-            get: function () { return label; }
+            get: function () { return count; }
         });
     };
 }
@@ -24,7 +24,7 @@ var Test = /** @class */ (function () {
         xyz('test', 142) // invokes Override, which returns the decorator
     ], Test.prototype, "name");
     __decorate([
-        xyz('', 12)
+        xyz('nope', 12)
     ], Test.prototype, "age");
     return Test;
 }());
@@ -32,6 +32,7 @@ var t = new Test();
 console.log("1. Property Decorator ");
 console.log(t.name); // 'test'
 console.log("--------------------");
+console.log(t.age); // 'test'
 function log(prefix) {
     return function (target) {
         var f = function () {

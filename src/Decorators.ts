@@ -3,7 +3,7 @@ function xyz(label: string, count: number) {
   return function (target: any, key: string) {
     Object.defineProperty(target, key, { 
       configurable: false,
-      get: () => label
+      get: () => count
     });
   }
 }
@@ -12,7 +12,7 @@ class Test {
   @xyz('test', 142)      // invokes Override, which returns the decorator
   name: string = 'pat';
 
-  @xyz('',12)
+  @xyz('nope',12)
   age: number = 10;
 
 }
@@ -23,6 +23,7 @@ let t = new Test();
 console.log("1. Property Decorator ")
 console.log(t.name);  // 'test'
 console.log("--------------------")
+console.log(t.age);  // 'nope'
 
 
 function log(prefix?: string) {
