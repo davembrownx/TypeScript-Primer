@@ -7,58 +7,52 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-function xyz(label, count) {
-    return function (target, key) {
-        Object.defineProperty(target, key, {
-            configurable: false,
-            get: function () { return count; }
-        });
-    };
-}
-var Test = /** @class */ (function () {
-    function Test() {
-        this.name = 'pat';
-        this.age = 10;
-    }
-    __decorate([
-        xyz('test', 142) // invokes Override, which returns the decorator
-    ], Test.prototype, "name");
-    __decorate([
-        xyz('nope', 12)
-    ], Test.prototype, "age");
-    return Test;
-}());
-var t = new Test();
-console.log("1. Property Decorator ");
-console.log(t.name); // 'test'
-console.log("--------------------");
-console.log(t.age); // 'test'
-function log(prefix) {
-    return function (target) {
-        var f = function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            console.log(prefix + target.name);
-        };
-        return f;
+//----Class Decorator Example----
+function myDecorator(prefix) {
+    return function (constructor) {
+        console.log(constructor);
+        console.log("decorator evaluated");
+        constructor.prototype.message = prefix + constructor.name;
     };
 }
 var World = /** @class */ (function () {
     function World() {
     }
     World = __decorate([
-        log('hello')
+        myDecorator('Hello ')
     ], World);
     return World;
 }());
-console.log("2. Class Decorator ");
-var w = new World(); // outputs "helloWorld"
+var w = new World();
+console.log("Class Decorator ");
+console.log(w.message);
 console.log("--------------------");
-function logPosition(target, propertyKey, parameterIndex) {
-    console.log(parameterIndex);
+//-----Property Decorator Operations-------
+function propertyDecorators(label, count) {
+    return function (target, key) {
+        Object.defineProperty(target, key, {
+            get: function () { return key + "= " + label + " " + count; }
+        });
+    };
 }
+var Test = /** @class */ (function () {
+    function Test() {
+        this.name = 'Jason';
+    }
+    __decorate([
+        propertyDecorators('Mr', 2)
+    ], Test.prototype, "name");
+    return Test;
+}());
+var t = new Test();
+console.log("1. Property Decorator ");
+console.log(t.name); // 'test'
+console.log("--------------------");
+//---Parameter Decorator Example----
+function logPosition(target, methodName, paramIndex) {
+    console.log("methodName: " + methodName + ", paramIndex: " + paramIndex);
+}
+console.log("Param Decorator ");
 var Cow = /** @class */ (function () {
     function Cow() {
     }
@@ -70,6 +64,5 @@ var Cow = /** @class */ (function () {
     ], Cow.prototype, "say");
     return Cow;
 }());
-console.log("3. Param Decorator ");
-new Cow().say('Hello', false); // outputs 1 (newline) hello
+new Cow().say('Hello', false);
 console.log("--------------------");

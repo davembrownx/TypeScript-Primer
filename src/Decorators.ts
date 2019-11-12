@@ -1,58 +1,60 @@
+//----Class Decorator Example----
+function myDecorator(prefix?: string) {
+  return (constructor:any) => {   
+        console.log(constructor);
+        console.log("decorator evaluated");
+        constructor.prototype.message = prefix+constructor.name;
+  };
 
-function xyz(label: string, count: number) {
+}
+
+@myDecorator('Hello ')
+class World {
+  message:string; 
+}
+
+let w = new World();
+console.log("Class Decorator ")
+console.log(w.message);
+console.log("--------------------")
+
+//-----Property Decorator Operations-------
+
+function propertyDecorators(label: string, count: number) {
   return function (target: any, key: string) {
     Object.defineProperty(target, key, { 
-      configurable: false,
-      get: () => count
+      get: () => key+"= "+label+" "+count
     });
   }
 }
 
 class Test {
-  @xyz('test', 142)      // invokes Override, which returns the decorator
-  name: string = 'pat';
-
-  @xyz('nope',12)
-  age: number = 10;
-
+  @propertyDecorators('Mr', 2) 
+  name: string = 'Jason';
 }
 
 let t = new Test();
 
-
 console.log("1. Property Decorator ")
 console.log(t.name);  // 'test'
 console.log("--------------------")
-console.log(t.age);  // 'nope'
 
 
-function log(prefix?: string) {
-  return (target:any) => {
-    var f: any = function (...args:any[]) {
-      console.log(prefix + target.name);
-    }
-    return f;
-  };
+
+//---Parameter Decorator Example----
+
+function logPosition(target: any, methodName: string, paramIndex: number) {
+  console.log("methodName: "+ methodName+", paramIndex: "+paramIndex);
 }
 
-@log('hello')
-class World {
-}
-console.log("2. Class Decorator ")
-const w = new World(); // outputs "helloWorld"
-console.log("--------------------")
-
-
-
-function logPosition(target: any, propertyKey: string, parameterIndex: number) {
-  console.log(parameterIndex);
-}
+console.log("Param Decorator ")
 
 class Cow {
   say(b: string, @logPosition c: boolean) {
     console.log(b);
   }
 }
-console.log("3. Param Decorator ")
-new Cow().say('Hello', false); // outputs 1 (newline) hello
+
+new Cow().say('Hello', false);
 console.log("--------------------")
+

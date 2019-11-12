@@ -1,3 +1,8 @@
+var Teacher = /** @class */ (function () {
+    function Teacher() {
+    }
+    return Teacher;
+}());
 var Student = /** @class */ (function () {
     function Student(firstName, middleInitial, lastName) {
         this.firstName = firstName;
@@ -7,13 +12,12 @@ var Student = /** @class */ (function () {
     }
     return Student;
 }());
-var Teacher = /** @class */ (function () {
-    function Teacher() {
-    }
-    return Teacher;
-}());
 function greeter(person) {
     return "Hello, " + person.firstName + " " + person.lastName;
 }
+//Student and Teacher have same shape
 var student = new Student("Jason", "Robert", "Monroe");
+var teacher = new Teacher();
+teacher = student; //valid typescript
 document.body.innerHTML = greeter(student);
+console.log(greeter(teacher));
