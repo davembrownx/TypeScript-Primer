@@ -27,6 +27,26 @@ var w = new World();
 console.log("Class Decorator ");
 console.log(w.message);
 console.log("--------------------");
+//----Method Decorator------------
+function myFunctionDecorator(extraStuff) {
+    return function (constructor, name) {
+        console.log(name + " function observed");
+    };
+}
+var MyClass = /** @class */ (function () {
+    function MyClass() {
+    }
+    MyClass.prototype.myFunction = function () {
+        console.log("inside function call");
+    };
+    __decorate([
+        myFunctionDecorator("testing")
+    ], MyClass.prototype, "myFunction");
+    return MyClass;
+}());
+var myClass = new MyClass();
+myClass.myFunction();
+myClass.myFunction();
 //-----Property Decorator Operations-------
 function propertyDecorators(label, count) {
     return function (target, key) {
@@ -66,3 +86,22 @@ var Cow = /** @class */ (function () {
 }());
 new Cow().say('Hello', false);
 console.log("--------------------");
+//------Accessor Decorator---------
+var MyClassWithAccessors = /** @class */ (function () {
+    function MyClassWithAccessors() {
+    }
+    Object.defineProperty(MyClassWithAccessors.prototype, "name", {
+        get: function () { return this.myVar; },
+        enumerable: true,
+        configurable: true
+    });
+    __decorate([
+        accessorDecorator("extra")
+    ], MyClassWithAccessors.prototype, "name");
+    return MyClassWithAccessors;
+}());
+function accessorDecorator(extra) {
+    return function (target, propertyKey) {
+        target.prototype.name + extra;
+    };
+}

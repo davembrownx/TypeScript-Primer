@@ -18,6 +18,24 @@ console.log("Class Decorator ")
 console.log(w.message);
 console.log("--------------------")
 
+//----Method Decorator------------
+function myFunctionDecorator(extraStuff:string){
+  return (constructor:any, name:string)=>{
+    console.log(name+" function observed");
+  }
+}
+
+class MyClass{
+  @myFunctionDecorator("testing")
+  myFunction(){
+    console.log("inside function call");
+  }
+}
+
+let myClass = new MyClass();
+myClass.myFunction();
+myClass.myFunction();
+
 //-----Property Decorator Operations-------
 
 function propertyDecorators(label: string, count: number) {
@@ -57,4 +75,3 @@ class Cow {
 
 new Cow().say('Hello', false);
 console.log("--------------------")
-
